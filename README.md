@@ -17,12 +17,14 @@ Production-ready full stack application for terrain-aware restoration planning i
 
 ```bash
 cd backend
-python -m venv .venv
+py -3.13 -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 copy .env.example .env
-uvicorn backend.main:app --reload --port 8000
+uvicorn main:app --reload --port 8000
 ```
+
+If you prefer to avoid the Rust compatibility path entirely, use Python 3.13 for the backend virtual environment.
 
 ## Run Frontend
 
