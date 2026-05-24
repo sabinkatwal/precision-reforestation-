@@ -1,0 +1,72 @@
+AI-Powered Ecological Restoration Intelligence Platform (Nepal) - Project Tree
+
+.gitignore
+README.md
+bbox.py
+train_model.py
+data_ingestion.py
+app.py
+requirements.txt
+
+backend/
+  __init__.py
+  .env.example
+  requirements.txt
+  main.py
+  config/
+    __init__.py
+    settings.py
+  models/
+    __init__.py
+    schemas.py
+  routers/
+    __init__.py
+    soil.py
+    elevation.py
+    environment.py
+    analysis.py
+  services/
+    __init__.py
+    soil_service.py
+    elevation_service.py
+    ai_service.py
+  utils/
+    __init__.py
+    ndvi.py
+    slope.py
+
+frontend/
+  model.html
+  index.html
+  .env.example
+  package.json
+  package-lock.json
+  vite.config.js
+  tailwind.config.js
+  postcss.config.js
+  src/
+    main.jsx
+    App.jsx
+    router/
+      index.jsx
+    services/
+      api.js
+      location.js
+    components/
+      MapView.jsx
+      SidePanel.jsx
+      Navbar.jsx
+      ConfidenceBar.jsx
+      Loading.jsx
+      PageShell.jsx
+    pages/
+      Dashboard.jsx
+      Biodiversity.jsx
+      Erosion.jsx
+      Carbon.jsx
+      Species.jsx
+      Insight.jsx
+    styles/
+      index.css
+
+project-tree.txt (this file)
