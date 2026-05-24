@@ -7,6 +7,7 @@ const navItems = [
   { to: "/carbon", label: "Carbon" },
   { to: "/species", label: "Species" },
   { to: "/insight", label: "Insight" },
+  { to: "/crops", label: "Crops" },
 ];
 
 export default function Navbar() {

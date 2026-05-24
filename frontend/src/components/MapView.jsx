@@ -46,7 +46,7 @@ export default function MapView({ location, onSelect }) {
       </div>
 
       <div className="map-shell h-[calc(100%-69px)] min-h-[491px]">
-        <MapContainer center={center} zoom={7} className="h-full w-full" zoomControl={false} scrollWheelZoom>
+        <MapContainer center={center} zoom={7} className="h-full w-full" zoomControl={false} scrollWheelZoom={false}>
           <BoundsHandler />
           <ClickHandler onSelect={onSelect} />
           <TileLayer

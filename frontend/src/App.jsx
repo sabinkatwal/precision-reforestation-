@@ -3,7 +3,7 @@ import AppRoutes from "./router/index.jsx";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-aurora-grid text-slate-100 relative overflow-hidden font-body">
+    <div className="min-h-screen bg-aurora-grid text-slate-100 relative overflow-x-hidden font-body">
       <div className="pointer-events-none absolute inset-0 opacity-35">
         <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-forest-500/20 blur-3xl" />
         <div className="absolute right-[-6rem] top-40 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />

@@ -56,13 +56,39 @@ class ErrorResponse(BaseModel):
     context: Optional[dict] = None
 
 
-class PrescriptionRecommendation(BaseModel):
-    species: str
-    score: float
-    reasons: List[str]
+# ── Crop Recommendation Models ─────────────────────────────────────────────
+
+class ClimateData(BaseModel):
+    avg_temp_max: float
+    avg_temp_min: float
+    annual_rainfall: float
+    dry_months: int
+    source: str = "open-meteo"
 
 
-class PrescriptionResponse(BaseModel):
-    location: dict
-    features: dict
-    recommendations: List[PrescriptionRecommendation]
+class CropSuggestion(BaseModel):
+    name: str
+    local_name: str
+    confidence: float = Field(..., ge=0, le=100)
+    season: Literal["Kharif", "Rabi", "Year-round"]
+    planting_month: str
+    harvest_month: str
+    water_requirement: Literal["Low", "Medium", "High"]
+    soil_suitability: str
+    yield_estimate: str
+    reason: str
+    warnings: List[str] = []
+
+
+class CropAnalysisResult(BaseModel):
+    crops: List[CropSuggestion]
+    best_season: str
+    irrigation_needed: bool
+    insight: str
+    climate: ClimateData
+    soil: SoilData
+    elevation: ElevationData
+
+
+class CropRequest(Coordinates):
+    pass
