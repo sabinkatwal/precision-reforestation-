@@ -12,4 +12,6 @@ export const getSoil = (lat, lng) => API.get(`/soil?lat=${lat}&lng=${lng}`);
 
 export const getElevation = (lat, lng) => API.get(`/elevation?lat=${lat}&lng=${lng}`);
 
+export const getCropRecommendations = (lat, lng) => API.get(`/crops?lat=${lat}&lng=${lng}`);
+
 export default API;

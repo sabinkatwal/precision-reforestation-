@@ -5,6 +5,7 @@ import Erosion from "../pages/Erosion.jsx";
 import Carbon from "../pages/Carbon.jsx";
 import Species from "../pages/Species.jsx";
 import Insight from "../pages/Insight.jsx";
+import Crops from "../pages/Crops.jsx";
 
 export default function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ export default function AppRoutes() {
       <Route path="/carbon" element={<Carbon />} />
       <Route path="/species" element={<Species />} />
       <Route path="/insight" element={<Insight />} />
+      <Route path="/crops" element={<Crops />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
