@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "../pages/Dashboard.jsx";
+import Home from "../pages/Home.jsx";
 import Biodiversity from "../pages/Biodiversity.jsx";
 import Erosion from "../pages/Erosion.jsx";
 import Carbon from "../pages/Carbon.jsx";
@@ -11,6 +12,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/biodiversity" element={<Biodiversity />} />
       <Route path="/erosion" element={<Erosion />} />
       <Route path="/carbon" element={<Carbon />} />
