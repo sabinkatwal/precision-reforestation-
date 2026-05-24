@@ -11,67 +11,61 @@ export default function Carbon() {
 
   useEffect(() => {
     let mounted = true;
-
-    async function load() {
-      try {
-        setLoading(true);
-        const response = await analyzePatch(location.lat, location.lng);
-        if (mounted) {
-          setAnalysis(response.data);
-        }
-      } catch (requestError) {
-        if (mounted) {
-          setError(requestError?.response?.data?.detail || requestError.message || "Unable to fetch carbon estimate.");
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    load();
-    return () => {
-      mounted = false;
-    };
+    analyzePatch(location.lat, location.lng)
+      .then((r) => { if (mounted) setAnalysis(r.data); })
+      .catch((e) => { if (mounted) setError(e?.response?.data?.detail || e.message); })
+      .finally(() => { if (mounted) setLoading(false); });
+    return () => { mounted = false; };
   }, [location.lat, location.lng]);
 
-  const carbonPotential = analysis?.carbon_potential ?? 0;
-  const organicMatter = analysis?.environment?.soil?.organic_matter ?? 0;
+  const carbon = analysis?.carbon_potential ?? 0;
 
   return (
     <PageShell
-      title="Carbon"
-      subtitle="Estimate restoration-linked carbon potential from terrain, soil, and vegetation signals."
-      loading={loading}
-      error={error}
-      action={<div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-300">CO2e {carbonPotential.toFixed(2)} t/yr</div>}
+      title="Carbon Potential"
+      subtitle="Estimate restoration-linked carbon sequestration from terrain, soil, and vegetation."
+      loading={loading} error={error}
+      action={
+        <span style={{ background: "#dcfce7", color: "#15803d", border: "1px solid #86efac", borderRadius: 100, padding: "6px 14px", fontSize: "0.8rem", fontWeight: 600 }}>
+          CO₂e {carbon.toFixed(2)} t/yr
+        </span>
+      }
     >
-      <div className="grid gap-5 lg:grid-cols-[1fr_1fr]">
-        <div className="rounded-[24px] border border-white/8 bg-black/20 p-5">
-          <div className="text-sm uppercase tracking-[0.24em] text-slate-500">Carbon Potential</div>
-          <div className="mt-3 font-display text-6xl font-bold text-white">{carbonPotential.toFixed(2)}</div>
-          <div className="mt-2 text-sm text-slate-400">tons of CO2e per year</div>
-          <div className="mt-4 text-sm leading-6 text-slate-300">
-            Organic matter and canopy recovery increase the site’s sequestration capacity.
-          </div>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+        .carbon-grid { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+        .ccard { background: white; border: 1px solid #dcfce7; border-radius: 24px; padding: 24px; }
+        .ccard-label { font-size: 0.7rem; font-weight: 700; color: #16a34a; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+        .ccard-value { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; color: #052e16; line-height: 1; }
+        .ccard-unit { font-size: 0.875rem; color: #4b7a59; margin-top: 6px; }
+        .ccard-title { font-size: 1rem; font-weight: 600; color: #052e16; margin-bottom: 14px; }
+        .ccard-text { font-size: 0.875rem; color: #4b7a59; line-height: 1.7; }
+        .cstat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+        .cstat { background: #f0fdf4; border-radius: 14px; padding: 14px; }
+        .cstat-label { font-size: 0.65rem; color: #16a34a; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+        .cstat-value { font-size: 1.2rem; font-weight: 600; color: #052e16; margin-top: 4px; }
+        @media (max-width: 768px) { .carbon-grid { grid-template-columns: 1fr; } }
+      `}</style>
+      <div className="carbon-grid">
+        <div className="ccard">
+          <div className="ccard-label">Carbon Potential</div>
+          <div className="ccard-value">{carbon.toFixed(2)}</div>
+          <div className="ccard-unit">tons of CO₂e per year</div>
+          <p className="ccard-text" style={{ marginTop: 12 }}>Organic matter and canopy recovery increase the site's sequestration capacity.</p>
         </div>
-
-        <div className="rounded-[24px] border border-white/8 bg-white/5 p-5">
-          <div className="font-semibold text-white">Drivers</div>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl bg-black/20 p-4">
-              <div className="text-xs text-slate-400">Organic Matter</div>
-              <div className="mt-1 text-2xl font-semibold text-white">{organicMatter.toFixed(2)}%</div>
+        <div className="ccard">
+          <div className="ccard-title">Key Drivers</div>
+          <div className="cstat-grid">
+            <div className="cstat">
+              <div className="cstat-label">Organic Matter</div>
+              <div className="cstat-value">{analysis?.environment?.soil?.organic_matter?.toFixed(2) ?? "—"}%</div>
             </div>
-            <div className="rounded-2xl bg-black/20 p-4">
-              <div className="text-xs text-slate-400">NDVI</div>
-              <div className="mt-1 text-2xl font-semibold text-white">{analysis?.environment?.ndvi?.toFixed(3) ?? "—"}</div>
+            <div className="cstat">
+              <div className="cstat-label">NDVI</div>
+              <div className="cstat-value">{analysis?.environment?.ndvi?.toFixed(3) ?? "—"}</div>
             </div>
           </div>
-          <div className="mt-4 text-sm leading-6 text-slate-300">
-            Higher organic matter usually signals stronger biomass accumulation and better long-term storage potential.
-          </div>
+          <p className="ccard-text">Higher organic matter signals stronger biomass accumulation and better long-term carbon storage potential.</p>
         </div>
       </div>
     </PageShell>
