@@ -73,35 +73,6 @@ def _species_from_environment(environment: EnvironmentData) -> List[SpeciesSugge
     return species[:3]
 
 
-def _fallback_result(environment: EnvironmentData) -> AnalysisResult:
-    soil = environment.soil
-    slope = environment.slope
-    elevation = environment.elevation.elevation
-    ndvi = environment.ndvi
-
-    biodiversity_score = _clamp(28 + ndvi * 55 + soil.organic_matter * 2.6 + (7 - abs(soil.ph - 6.2)) * 3.5 - slope * 0.7, 0, 100)
-    if slope < 8:
-        erosion_risk = "Low"
-    elif slope < 20:
-        erosion_risk = "Medium"
-    else:
-        erosion_risk = "High"
-
-    carbon_potential = _clamp((soil.organic_matter * 1.8 + ndvi * 7.5) * (1.2 if elevation < 2000 else 1.0), 0, 40)
-    insight = (
-        f"The site shows {'strong' if biodiversity_score > 65 else 'moderate' if biodiversity_score > 45 else 'limited'} restoration potential. "
-        f"Slope conditions indicate {erosion_risk.lower()} erosion exposure, so prioritize deep-rooted natives and phased soil stabilization."
-    )
-    return AnalysisResult(
-        biodiversity_score=round(float(biodiversity_score), 1),
-        erosion_risk=erosion_risk,
-        carbon_potential=round(float(carbon_potential), 2),
-        species=_species_from_environment(environment),
-        insight=insight,
-        environment=environment,
-    )
-
-
 def _strip_json(text: str) -> str:
     text = text.strip()
     if text.startswith("```"):
@@ -145,6 +116,38 @@ async def _call_claude(prompt: str) -> Dict[str, Any]:
         return json.loads(_strip_json("".join(text_parts)))
 
 
+def _fallback_analysis(environment: EnvironmentData) -> AnalysisResult:
+    species = _species_from_environment(environment)
+    slope = environment.slope
+    ndvi = environment.ndvi
+    soil = environment.soil
+    biodiversity_score = _clamp(
+        28.0
+        + max(0.0, 32.0 - abs(slope - 12.0))
+        + max(0.0, (ndvi + 0.15) * 38.0)
+        + max(0.0, (soil.organic_matter - 2.5) * 3.5),
+        0.0,
+        100.0,
+    )
+    erosion_risk = "High" if slope >= 25 else "Medium" if slope >= 12 else "Low"
+    carbon_potential = round(
+        max(0.5, (soil.organic_matter * 0.9) + max(0.0, ndvi + 0.05) * 6.5 + max(0.0, 18.0 - slope) * 0.06),
+        2,
+    )
+    insight = (
+        f"Estimated fallback analysis for {environment.terrain_class.lower()} terrain. "
+        f"Prioritize {species[0].name} and {species[1].name} with erosion control where slope is {slope:.1f}°."
+    )
+    return AnalysisResult(
+        biodiversity_score=round(biodiversity_score, 1),
+        erosion_risk=erosion_risk,
+        carbon_potential=carbon_potential,
+        species=species,
+        insight=insight,
+        environment=environment,
+    )
+
+
 def _build_prompt(environment: EnvironmentData) -> str:
     return PROMPT_TEMPLATE.format(
         elevation=round(environment.elevation.elevation, 2),
@@ -170,4 +173,4 @@ async def analyze_with_claude(environment: EnvironmentData) -> AnalysisResult:
             environment=environment,
         )
     except Exception:
-        return _fallback_result(environment)
+        return _fallback_analysis(environment)

@@ -65,7 +65,7 @@ export default function Biodiversity() {
         <div className="rounded-[24px] border border-white/8 bg-white/5 p-5">
           <div className="font-semibold text-white">Logic</div>
           <div className="mt-3 space-y-3 text-sm leading-6 text-slate-300">
-            <p>The backend combines live soil and elevation context with generated NDVI and slope estimates, then scores the site through Claude or a deterministic fallback.</p>
+            <p>The backend combines live soil and elevation context with generated NDVI and slope estimates, then scores the site through Claude. If an upstream API is unavailable, the request fails instead of fabricating data.</p>
             <p>Higher NDVI, stronger organic matter, and moderate slopes typically improve the score, while steep or nutrient-poor terrain pulls it down.</p>
           </div>
         </div>

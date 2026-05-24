@@ -1,7 +1,13 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from backend.config.settings import get_settings
 from backend.routers.analysis import router as analysis_router

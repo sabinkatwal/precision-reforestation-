@@ -5,7 +5,7 @@ Production-ready full stack application for terrain-aware restoration planning i
 ## Stack
 
 - Frontend: React, Vite, Tailwind CSS, React Router, Axios, React Leaflet
-- Backend: FastAPI, httpx, Pydantic
+- Backend: FastAPI, httpx, Pydantic, NARC soil API
 - AI: Claude API
 
 ## Structure
@@ -18,11 +18,16 @@ Production-ready full stack application for terrain-aware restoration planning i
 ```bash
 cd backend
 py -3.13 -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-copy .env.example .env
-uvicorn main:app --reload --port 8000
+source .venv/Scripts/activate
+python -m pip install -r requirements.txt
+cp .env.example .env
+python -m uvicorn main:app --reload --port 8000
 ```
+
+Run these commands from inside `backend/` so the virtual environment lives at `backend/.venv`.
+
+If you are using PowerShell or Command Prompt instead of Git Bash, activate the venv with `.venv\Scripts\activate`.
+In PowerShell, copy the env file with `Copy-Item .env.example .env`.
 
 If you prefer to avoid the Rust compatibility path entirely, use Python 3.13 for the backend virtual environment.
 
@@ -41,6 +46,7 @@ npm run dev
 - `ANTHROPIC_MODEL` for the Claude model name
 - `CORS_ORIGINS` for frontend origins
 - `API_TIMEOUT_SECONDS` for backend timeouts
+- `NARC_SOIL_API_URL` for the NARC soil and elevation endpoint
 
 ## API Endpoints
 
@@ -51,5 +57,5 @@ npm run dev
 
 ## Notes
 
-- If `ANTHROPIC_API_KEY` is not configured, the backend returns a deterministic fallback analysis so the app still runs end to end.
+- The backend now uses the NARC soil API for soil properties and elevation only; if the live API is unavailable, the request fails instead of fabricating values.
 - The legacy `frontend/model.html` file is preserved in the repo, but the production app is the Vite frontend in `frontend/src/`.

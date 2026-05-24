@@ -12,11 +12,18 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function Dashboard() {
   const [location, setLocation] = useState(() => getStoredLocation());
+  const [latInput, setLatInput] = useState(() => String(getStoredLocation().lat));
+  const [lngInput, setLngInput] = useState(() => String(getStoredLocation().lng));
   const [environment, setEnvironment] = useState(null);
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
   const [stage, setStage] = useState("Fetching soil data...");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setLatInput(String(location.lat));
+    setLngInput(String(location.lng));
+  }, [location.lat, location.lng]);
 
   const runAnalysis = async (nextLocation = location) => {
     const resolvedLocation = nextLocation || location;
@@ -43,6 +50,24 @@ export default function Dashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCoordinateSubmit = async (event) => {
+    event.preventDefault();
+    const nextLat = Number.parseFloat(latInput);
+    const nextLng = Number.parseFloat(lngInput);
+
+    if (!Number.isFinite(nextLat) || !Number.isFinite(nextLng)) {
+      setError("Enter valid latitude and longitude values.");
+      return;
+    }
+
+    if (nextLat < -90 || nextLat > 90 || nextLng < -180 || nextLng > 180) {
+      setError("Latitude must be between -90 and 90, and longitude between -180 and 180.");
+      return;
+    }
+
+    await runAnalysis({ lat: nextLat, lng: nextLng });
   };
 
   useEffect(() => {
@@ -79,7 +104,7 @@ export default function Dashboard() {
                 AI-Powered Ecological Restoration Intelligence Platform
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400 md:text-base">
-                Click any point in Nepal to pull live soil and elevation data, estimate terrain exposure, and ask Claude for restoration guidance.
+                Enter latitude and longitude, or click any point in Nepal, to pull soil and elevation data, estimate terrain exposure, and ask Claude for restoration guidance.
               </p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-300">
@@ -89,6 +114,37 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+
+          <form onSubmit={handleCoordinateSubmit} className="mt-5 grid gap-3 rounded-3xl border border-white/8 bg-black/15 p-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] md:items-end">
+            <label className="block">
+              <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-slate-500">Latitude</span>
+              <input
+                type="number"
+                step="any"
+                value={latInput}
+                onChange={(event) => setLatInput(event.target.value)}
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-forest-400/50"
+                placeholder="27.7172"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-slate-500">Longitude</span>
+              <input
+                type="number"
+                step="any"
+                value={lngInput}
+                onChange={(event) => setLngInput(event.target.value)}
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-forest-400/50"
+                placeholder="85.3240"
+              />
+            </label>
+            <button
+              type="submit"
+              className="rounded-2xl bg-forest-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-forest-400"
+            >
+              Use Coordinates
+            </button>
+          </form>
         </div>
 
         <MapView location={location} onSelect={runAnalysis} />
