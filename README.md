@@ -24,7 +24,13 @@ cp .env.example .env
 python -m uvicorn main:app --reload --port 8000
 ```
 
-Run these commands from inside `backend/` so the virtual environment lives at `backend/.venv`.
+Or from the repository root, you can now run:
+
+```bash
+python -m uvicorn main:app --reload --port 8000
+```
+
+Run the first set of commands from inside `backend/` so the virtual environment lives at `backend/.venv`.
 
 If you are using PowerShell or Command Prompt instead of Git Bash, activate the venv with `.venv\Scripts\activate`.
 In PowerShell, copy the env file with `Copy-Item .env.example .env`.
@@ -53,6 +59,18 @@ If you prefer to run the script directly, use:
 ```bash
 python ml_pipeline\verify_pipeline.py
 ```
+
+### Enable real NARC feature data
+
+To train and predict with real NARC soil/environ data instead of the mock provider, set:
+
+```bash
+set USE_NARC_PROVIDER=true
+set NARC_API_URL=https://your-narc-api.example.com/soil
+set NARC_API_KEY=your_api_key_here
+```
+
+If `USE_NARC_PROVIDER` is not enabled, the pipeline will fall back to `MockFeatureProvider`.
 
 ## Environment Variables
 

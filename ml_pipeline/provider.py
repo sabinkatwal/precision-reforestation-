@@ -4,8 +4,17 @@ Provides a clean abstraction to swap between mock and real API datasets.
 """
 
 from abc import ABC, abstractmethod
+import json
 import math
+import os
 import hashlib
+import sqlite3
+from pathlib import Path
+
+import requests
+from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
+
+from config import NARC_API_KEY, NARC_API_URL, NUMERIC_FEATURES, CATEGORICAL_FEATURES
 
 class FeatureProvider(ABC):
     """
@@ -165,55 +174,135 @@ class MockFeatureProvider(FeatureProvider):
 
 class NARCFeatureProvider(FeatureProvider):
     """
-    NARC API Implementation (LATER).
-    This acts as a placeholder for integrating the real REST API once it goes live.
-    Implements caching (to disk/sqlite or Redis) and retry decorators.
+    NARC FeatureProvider implementation.
+    Queries the NARC soil API for coordinates and caches responses locally.
     """
 
-    def __init__(self, api_url: str = None, cache_db: str = "narc_cache.db"):
-        self.api_url = api_url or "https://api.narc-nepal.gov/v1/soil-query"
-        self.cache_db = cache_db
-        # TODO: Initialize caching database (SQLite or Redis client) here
+    def __init__(self, api_url: str = None, api_key: str = None, cache_db: str = None):
+        self.api_url = api_url or NARC_API_URL
+        self.api_key = api_key or NARC_API_KEY
+        self.cache_db_path = Path(cache_db or Path(__file__).resolve().parent / "narc_cache.db")
+
+        if not self.api_url:
+            raise ValueError(
+                "NARC API URL is not configured. Set NARC_API_URL or disable USE_NARC_PROVIDER."
+            )
+
+        self._init_cache()
+
+    def _init_cache(self) -> None:
+        self.cache_db_path.parent.mkdir(parents=True, exist_ok=True)
+        with sqlite3.connect(self.cache_db_path) as conn:
+            conn.execute(
+                "CREATE TABLE IF NOT EXISTS narc_cache (cache_key TEXT PRIMARY KEY, payload TEXT, updated_at REAL)"
+            )
+            conn.commit()
+
+    def _check_cache(self, key: str) -> dict | None:
+        with sqlite3.connect(self.cache_db_path) as conn:
+            row = conn.execute(
+                "SELECT payload FROM narc_cache WHERE cache_key = ?", (key,)
+            ).fetchone()
+            if row:
+                return json.loads(row[0])
+        return None
+
+    def _write_cache(self, key: str, data: dict) -> None:
+        with sqlite3.connect(self.cache_db_path) as conn:
+            conn.execute(
+                "INSERT OR REPLACE INTO narc_cache (cache_key, payload, updated_at) VALUES (?, ?, strftime('%s','now'))",
+                (key, json.dumps(data)),
+            )
+            conn.commit()
+
+    @retry(
+        retry=retry_if_exception_type((requests.RequestException, ValueError)),
+        stop=stop_after_attempt(4),
+        wait=wait_exponential(multiplier=1, min=1, max=10),
+    )
+    def _fetch_raw_features(self, lat: float, lon: float) -> dict:
+        headers = {"Accept": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+
+        response = requests.get(
+            self.api_url,
+            params={"latitude": lat, "longitude": lon},
+            headers=headers,
+            timeout=15,
+        )
+        response.raise_for_status()
+        data = response.json()
+        if not isinstance(data, dict):
+            raise ValueError("Unexpected NARC API response format")
+        return data
 
     def get_features(self, lat: float, lon: float) -> dict:
-        """
-        Queries the NARC REST API to fetch real soil and environmental parameters.
-        Includes a local cache check before calling the remote server.
-        """
-        # TODO: Step 1. Check local cache (e.g. SQLite database) for coordinates (rounded to 4 decimal places)
-        # cache_key = f"{lat:.4f}:{lon:.4f}"
-        # cached_result = self._check_cache(cache_key)
-        # if cached_result:
-        #     return cached_result
+        cache_key = f"{lat:.5f}:{lon:.5f}"
+        cached = self._check_cache(cache_key)
+        if cached is not None:
+            return cached
 
-        # TODO: Step 2. Execute HTTP GET/POST request with retry logic (e.g. using tenacity or a manual retry loop)
-        # headers = {"Authorization": "Bearer YOUR_NARC_API_KEY"}
-        # params = {"latitude": lat, "longitude": lon}
-        # response = requests.get(self.api_url, params=params, headers=headers, timeout=10)
-        # response.raise_for_status()
-        # raw_data = response.json()
+        raw_data = self._fetch_raw_features(lat, lon)
+        normalized = self._normalize_response(raw_data)
+        self._write_cache(cache_key, normalized)
+        return normalized
 
-        # TODO: Step 3. Normalize API field names and handle missing values
-        # e.g., mapping "organicmatter" -> "organic_matter", filling missing micronutrients with median values
-        # normalized = self._normalize_response(raw_data)
+    def _find_value(self, data: dict, candidates: list[str]):
+        if not isinstance(data, dict):
+            return None
 
-        # TODO: Step 4. Write to local cache
-        # self._write_cache(cache_key, normalized)
+        for candidate in candidates:
+            if candidate in data:
+                return data[candidate]
 
-        # Raise an exception for now since this provider is not yet live
-        raise NotImplementedError(
-            "NARCFeatureProvider is not active yet. "
-            "Please configure the application to use MockFeatureProvider during development."
-        )
+        for value in data.values():
+            if isinstance(value, dict):
+                found = self._find_value(value, candidates)
+                if found is not None:
+                    return found
+        return None
 
-    def _check_cache(self, key: str) -> dict:
-        # TODO: Implement database cache lookup
-        return {}
-
-    def _write_cache(self, key: str, data: dict):
-        # TODO: Implement caching write operation
-        pass
+    def _cast_numeric(self, value):
+        if value is None:
+            return None
+        if isinstance(value, str):
+            try:
+                return float(value.replace(",", "."))
+            except ValueError:
+                return None
+        if isinstance(value, (int, float)):
+            return float(value)
+        return None
 
     def _normalize_response(self, raw_data: dict) -> dict:
-        # TODO: Implement response mapping and standard validation checks
-        return raw_data
+        mapping = {
+            "elevation": ["elevation", "elev", "altitude", "height"],
+            "pH": ["pH", "ph", "soil_ph", "soil_pH"],
+            "organic_matter": ["organic_matter", "organicMatter", "organic matter", "om"],
+            "total_nitrogen": ["total_nitrogen", "nitrogen", "n", "totalNitrogen"],
+            "potassium": ["potassium", "k", "potassium_mgkg", "k_mgkg"],
+            "P2O5": ["P2O5", "p2o5", "phosphorus", "phosphorus_oxide"],
+            "boron": ["boron", "b"],
+            "zinc": ["zinc", "zn"],
+            "sand": ["sand", "sand_percent", "sand_pct"],
+            "clay": ["clay", "clay_percent", "clay_pct"],
+            "silt": ["silt", "silt_percent", "silt_pct"],
+            "parent_soil": ["parent_soil", "parentSoil", "soil_parent_material", "parent_material"],
+            "province": ["province", "state", "admin1"],
+            "district": ["district", "admin2", "county"],
+            "gaupalika": ["gaupalika", "municipality", "local_body", "rural_municipality"],
+        }
+
+        normalized: dict = {}
+        for feature, candidates in mapping.items():
+            value = self._find_value(raw_data, candidates)
+            if feature in NUMERIC_FEATURES:
+                casted = self._cast_numeric(value)
+                if casted is None:
+                    raise ValueError(f"Missing or invalid required numeric NARC feature: {feature}")
+                normalized[feature] = casted
+            else:
+                normalized[feature] = str(value).strip() if value is not None else "Unknown"
+
+        return normalized

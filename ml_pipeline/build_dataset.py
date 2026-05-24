@@ -12,8 +12,16 @@ from pathlib import Path
 # Add parent directory to sys.path to allow running from any folder
 sys.path.append(str(Path(__file__).resolve().parent))
 
-from config import NEPAL_BBOX, OCCURRENCE_FILES, TRAINING_DATA_PATH
-from provider import MockFeatureProvider
+from config import NEPAL_BBOX, OCCURRENCE_FILES, TRAINING_DATA_PATH, USE_NARC_PROVIDER
+from provider import MockFeatureProvider, NARCFeatureProvider
+
+def create_feature_provider():
+    if USE_NARC_PROVIDER:
+        print("Using NARCFeatureProvider for environmental feature lookup.")
+        return NARCFeatureProvider()
+    print("Using MockFeatureProvider for environmental feature lookup.")
+    return MockFeatureProvider()
+
 
 def load_and_clean_occurrences() -> pd.DataFrame:
     """
@@ -109,7 +117,7 @@ def build_dataset():
     occurrences = load_and_clean_occurrences()
 
     print("\n=== STEP 3: JOINING ENVIRONMENTAL FEATURES ===")
-    provider = MockFeatureProvider()
+    provider = create_feature_provider()
     
     dataset_rows = []
     

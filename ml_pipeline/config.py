@@ -34,6 +34,11 @@ TRAINING_DATA_PATH = DATA_DIR / "training_dataset.csv"
 MODEL_PATH = MODEL_DIR / "tree_model.joblib"
 ENCODERS_PATH = MODEL_DIR / "encoders.joblib"
 
+# NARC API integration settings
+NARC_API_URL = os.getenv("NARC_API_URL", "").strip()
+NARC_API_KEY = os.getenv("NARC_API_KEY", "").strip()
+USE_NARC_PROVIDER = os.getenv("USE_NARC_PROVIDER", "false").strip().lower() in ("1", "true", "yes")
+
 # Soil & Environmental Features Schema
 NUMERIC_FEATURES = [
     "elevation",

@@ -14,8 +14,8 @@ from pathlib import Path
 # Add parent directory to sys.path to allow running directly from CLI
 sys.path.append(str(Path(__file__).resolve().parent))
 
-from config import MODEL_PATH, ENCODERS_PATH
-from provider import FeatureProvider, MockFeatureProvider
+from config import MODEL_PATH, ENCODERS_PATH, USE_NARC_PROVIDER
+from provider import FeatureProvider, MockFeatureProvider, NARCFeatureProvider
 from explain import generate_explanations
 
 
@@ -31,9 +31,12 @@ def predict_species_suitability(lat: float, lon: float, provider: FeatureProvide
     Returns:
         dict: Recommendation report conforming to requirements.
     """
-    # 1. Instantiate FeatureProvider if not provided (defaults to Mock)
+    # 1. Instantiate FeatureProvider if not provided
     if provider is None:
-        provider = MockFeatureProvider()
+        if USE_NARC_PROVIDER:
+            provider = NARCFeatureProvider()
+        else:
+            provider = MockFeatureProvider()
 
     # 2. Extract environmental features at coordinates
     # This acts as our deterministic function: F(lat, lon) -> environmental features
