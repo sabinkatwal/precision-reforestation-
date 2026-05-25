@@ -54,21 +54,21 @@ def _species_from_environment(environment: EnvironmentData) -> List[SpeciesSugge
     species: List[SpeciesSuggestion] = []
 
     if elevation < 900:
-        species.append(SpeciesSuggestion(name="Shorea robusta", confidence=84, reason="Low-elevation Terai conditions with warm temperatures and fertile soils."))
-        species.append(SpeciesSuggestion(name="Dalbergia sissoo", confidence=79, reason="Supports degraded riverine and lowland restoration where moisture is available."))
+        species.append(SpeciesSuggestion(name="Shorea robusta(Sal)", confidence=84, reason="Low-elevation Terai conditions with warm temperatures and fertile soils."))
+        species.append(SpeciesSuggestion(name="Dalbergia sissoo(Sisau)", confidence=79, reason="Supports degraded riverine and lowland restoration where moisture is available."))
     elif elevation < 1800:
-        species.append(SpeciesSuggestion(name="Pinus roxburghii", confidence=88, reason="Strong fit for mid-elevation Himalayan slopes with moderate disturbance."))
-        species.append(SpeciesSuggestion(name="Alnus nepalensis", confidence=82, reason="Nitrogen-fixing pioneer that stabilizes landslide-prone hillsides."))
+        species.append(SpeciesSuggestion(name="Pinus roxburghii(Khote Sallo)", confidence=88, reason="Strong fit for mid-elevation Himalayan slopes with moderate disturbance."))
+        species.append(SpeciesSuggestion(name="Alnus nepalensis(Utis)", confidence=82, reason="Nitrogen-fixing pioneer that stabilizes landslide-prone hillsides."))
     else:
-        species.append(SpeciesSuggestion(name="Quercus lanata", confidence=86, reason="Well adapted to cooler montane forests with robust carbon storage potential."))
-        species.append(SpeciesSuggestion(name="Rhododendron arboreum", confidence=80, reason="Native highland broadleaf species suited to acidic, cooler sites."))
+        species.append(SpeciesSuggestion(name="Quercus lanata(Banjh)", confidence=86, reason="Well adapted to cooler montane forests with robust carbon storage potential."))
+        species.append(SpeciesSuggestion(name="Rhododendron arboreum(Lali Gurans)", confidence=80, reason="Native highland broadleaf species suited to acidic, cooler sites."))
 
     if ndvi > 0.45 and soil.organic_matter > 4:
-        species.append(SpeciesSuggestion(name="Schima wallichii", confidence=76, reason="Performs well where canopy recovery and mixed broadleaf structure are already emerging."))
+        species.append(SpeciesSuggestion(name="Schima wallichii(Chilaune)", confidence=76, reason="Performs well where canopy recovery and mixed broadleaf structure are already emerging."))
     elif slope > 20:
-        species.append(SpeciesSuggestion(name="Bambusa nutans", confidence=74, reason="Useful for rapid slope binding and soil reinforcement on steeper terrain."))
+        species.append(SpeciesSuggestion(name="Bambusa nutans(Mal Bans)", confidence=74, reason="Useful for rapid slope binding and soil reinforcement on steeper terrain."))
     else:
-        species.append(SpeciesSuggestion(name="Celtis australis", confidence=72, reason="Versatile native tree that supports multi-strata restoration on moderately stable ground."))
+        species.append(SpeciesSuggestion(name="Celtis australis(Khari)", confidence=72, reason="Versatile native tree that supports multi-strata restoration on moderately stable ground."))
 
     return species[:3]
 
