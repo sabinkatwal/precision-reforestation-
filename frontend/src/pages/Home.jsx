@@ -95,6 +95,28 @@ export default function Home() {
   const { theme, toggleTheme } = useTheme();
   const [visible, setVisible] = useState(false);
   const [activeView, setActiveView] = useState("hero");
+  const [spotlight, setSpotlight] = useState("map");
+
+  const spotlightCards = {
+    map: {
+      label: "Site mapping",
+      title: "Start with a point",
+      text: "Click a location and the app instantly layers terrain, soil, and NDVI context for that patch.",
+      stat: "1 tap",
+    },
+    species: {
+      label: "Species fit",
+      title: "Match native trees",
+      text: "See which species rise to the top before you ever leave the homepage.",
+      stat: "Live AI",
+    },
+    dashboard: {
+      label: "Analysis workspace",
+      title: "Open the full dashboard",
+      text: "Move from overview to the full restoration workflow without losing the visual thread.",
+      stat: "Ready",
+    },
+  };
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 100);
@@ -277,6 +299,103 @@ export default function Home() {
           font-weight: 300;
         }
         .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .hero-spotlight {
+          margin: 28px auto 0;
+          max-width: 760px;
+          border: 1px solid var(--home-border);
+          border-radius: 28px;
+          background: linear-gradient(180deg, var(--home-surface), var(--home-surface-strong));
+          box-shadow: 0 20px 60px var(--home-surface-shadow);
+          overflow: hidden;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .hero-spotlight:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 24px 72px var(--home-surface-shadow);
+        }
+        .hero-spotlight-tabs {
+          display: flex;
+          gap: 8px;
+          padding: 12px;
+          flex-wrap: wrap;
+          border-bottom: 1px solid var(--home-border);
+        }
+        .spotlight-tab {
+          border: 1px solid transparent;
+          background: transparent;
+          color: var(--home-text-soft);
+          border-radius: 999px;
+          padding: 10px 14px;
+          font-size: 0.8rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .spotlight-tab:hover {
+          background: var(--home-surface-alt);
+          color: var(--home-text);
+        }
+        .spotlight-tab.active {
+          background: var(--home-accent);
+          color: #052e16;
+          box-shadow: 0 10px 24px var(--home-surface-shadow);
+        }
+        .hero-spotlight-body {
+          display: grid;
+          grid-template-columns: minmax(0, 1.4fr) minmax(180px, 0.6fr);
+          gap: 16px;
+          padding: 18px;
+          text-align: left;
+          align-items: center;
+        }
+        .hero-spotlight-label {
+          font-size: 0.72rem;
+          font-weight: 800;
+          color: var(--home-accent-strong);
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          margin-bottom: 8px;
+        }
+        .hero-spotlight-title {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.8rem;
+          color: var(--home-text);
+          margin-bottom: 8px;
+        }
+        .hero-spotlight-text {
+          color: var(--home-muted);
+          line-height: 1.7;
+          font-size: 0.95rem;
+        }
+        .hero-spotlight-stat {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 124px;
+          border-radius: 22px;
+          background: linear-gradient(180deg, var(--home-accent), var(--home-accent-strong));
+          color: #052e16;
+          box-shadow: 0 14px 30px var(--home-surface-shadow);
+        }
+        .hero-spotlight-stat span {
+          font-size: 0.72rem;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          font-weight: 800;
+          opacity: 0.85;
+        }
+        .hero-spotlight-stat strong {
+          font-family: 'Playfair Display', serif;
+          font-size: 2rem;
+          margin-top: 6px;
+        }
+        .hero-spotlight-stat em {
+          font-size: 0.78rem;
+          font-style: normal;
+          margin-top: 4px;
+          opacity: 0.8;
+        }
         .btn-primary {
           background: var(--home-accent); color: #052e16;
           border: none; border-radius: 100px;
@@ -578,6 +697,36 @@ export default function Home() {
               <button className="btn-secondary" onClick={() => setActiveView("features")}>
                 Learn More
               </button>
+            </div>
+            <div className="hero-spotlight">
+              <div className="hero-spotlight-tabs">
+                {[
+                  ["map", "Map a site"],
+                  ["species", "Pick species"],
+                  ["dashboard", "Open dashboard"],
+                ].map(([key, label]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    className={spotlight === key ? "spotlight-tab active" : "spotlight-tab"}
+                    onClick={() => setSpotlight(key)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div className="hero-spotlight-body">
+                <div>
+                  <div className="hero-spotlight-label">{spotlightCards[spotlight].label}</div>
+                  <div className="hero-spotlight-title">{spotlightCards[spotlight].title}</div>
+                  <div className="hero-spotlight-text">{spotlightCards[spotlight].text}</div>
+                </div>
+                <div className="hero-spotlight-stat">
+                  <span>Status</span>
+                  <strong>{spotlightCards[spotlight].stat}</strong>
+                  <em>interactive preview</em>
+                </div>
+              </div>
             </div>
           </div>
         </div>

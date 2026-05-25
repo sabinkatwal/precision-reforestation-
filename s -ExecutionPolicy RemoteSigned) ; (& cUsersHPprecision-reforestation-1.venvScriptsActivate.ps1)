@@ -1,0 +1,271 @@
+[33mcommit 5ce28c70e67978f4ac8913a066efcbd936871e66[m[33m ([m[1;36mHEAD[m[33m)[m
+Author: ElectronicsSuryansu <suryansujha69@gmail.com>
+Date:   Mon May 25 06:19:08 2026 +0545
+
+    updated frontend
+
+[33mcommit 75afe9a326164fa3a87f05c8fc18b178d93b81d1[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:55:07 2026 +0545
+
+    some frontend changes
+
+[33mcommit abff3ad2c1c5fcc2cd8dc73f58bc885592b6e062[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:55:01 2026 +0545
+
+    some frontend changes
+
+[33mcommit 6a62457432ee69f1ca3a85e977802026dfb54acd[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:54:56 2026 +0545
+
+    some frontend changes
+
+[33mcommit c5bac71bc1cfa7c29479e4ae4b186025b9b67e39[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:54:51 2026 +0545
+
+    some frontend changes
+
+[33mcommit 5e2692582af13c46577a08b3d45ae68cb69fbf9a[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:54:43 2026 +0545
+
+    some frontend changes
+
+[33mcommit eb10e29ad243e5b3a11a57107bf9153dc79fd02e[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:54:36 2026 +0545
+
+    some frontend changes
+
+[33mcommit 4af8ce19ce8dd2a004109376a4ede0dd4d605666[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:54:29 2026 +0545
+
+    some frontend changes
+
+[33mcommit c33bb8473a5a7c21c9b0965974f632749c193261[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:54:22 2026 +0545
+
+    some frontend changes
+
+[33mcommit 62f926bab631d03f7b751e6e71e276fb0b4cc733[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:54:13 2026 +0545
+
+    some frontend changes
+
+[33mcommit 4b227485e438b2b1800114b59f5e1edfb67778a7[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:54:00 2026 +0545
+
+    some frontend changes
+
+[33mcommit 59c86167bf0c0b437029b46b9d64df52ddaab839[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:52:22 2026 +0545
+
+    some frontend changes
+
+[33mcommit 958e630394f117f79ad8882c4c16fe7f400c72e6[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:52:15 2026 +0545
+
+    some frontend changes
+
+[33mcommit 7820b25058178677556309776b0f09e785deb1ef[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Mon May 25 02:52:06 2026 +0545
+
+    some frontend changes
+
+[33mcommit 7687d0e068ac647ab40fda84dc69e7a2e012d26a[m
+Merge: 6f54705 921d727
+Author: Safal Neupane <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 22:46:42 2026 +0545
+
+    Merge pull request #12 from sabinkatwal/main
+    
+    removed naarc
+
+[33mcommit 921d727a71cb1449c9992fc674081aac7ce1c8b2[m
+Author: sabin katwal <sabinkatwal02@gmail.com>
+Date:   Sun May 24 22:42:18 2026 +0545
+
+    removed naarc
+
+[33mcommit 6f54705556e71c2f47ae43b11b0a17692840f4a1[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 21:51:03 2026 +0545
+
+    Update CORS middleware to allow all origins
+
+[33mcommit 9ac89bb1670882c6b7718e68c8884f14715de447[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 21:35:02 2026 +0545
+
+    update
+
+[33mcommit 676ed35627ee5dc0b7bdbf8d95283c23f3825b7e[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 21:26:32 2026 +0545
+
+    updated
+
+[33mcommit 7e79d7756bf9767bbb1c670f86f6ed407c2333ad[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 21:20:27 2026 +0545
+
+    Fix build command path in railway.json to reference requirements.txt correctly
+
+[33mcommit 7c2063b227a4555384f1a4fd7ff60e82d26cbdcf[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 21:16:57 2026 +0545
+
+    Implement NARC API integration for environmental feature lookup and update README instructions
+
+[33mcommit 7bceade161a8ec05fd0be0144705f18d25d48b0d[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 20:21:09 2026 +0545
+
+    some minor changes
+
+[33mcommit 030b9b3a5ded6c1d7db44d1207f5904bc86efbfb[m
+Merge: 20821c1 6e5d01b
+Author: Safal Neupane <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:39:59 2026 +0545
+
+    Merge pull request #11 from bhusalsparsha/main
+    
+    Fixed NARC API
+
+[33mcommit 20821c12938700b969a217f536ab416c880d9051[m
+Merge: 0a70fd4 22c0e6d
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:37:38 2026 +0545
+
+    resolve conflicts, accept incoming changes
+
+[33mcommit 0a70fd427d9cc10d134089f2a458d980037d9150[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:32:35 2026 +0545
+
+    create explainability module for the system
+
+[33mcommit a6ec5afc2151a45e28f45c3b9b473833245389d1[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:31:57 2026 +0545
+
+    add config.py
+
+[33mcommit 522c8e82a0242716885a16775c5398965331d3b9[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:31:43 2026 +0545
+
+    add build_dataset.py
+
+[33mcommit 9ccd5785b0a773a824bd21981f45e458e2404516[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:31:23 2026 +0545
+
+    modify ai_service.py
+
+[33mcommit d1c38124b93e66a148a51d10637466187a8a7302[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:30:41 2026 +0545
+
+    modify analysis.py
+
+[33mcommit 0e8db59aca787ced30d89d1091320a1cc1478176[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:28:56 2026 +0545
+
+    modify schemas.py
+
+[33mcommit 539eda7b085cdfd08b2c493d791309f8574fe0c2[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:28:41 2026 +0545
+
+    update requirements.txt
+
+[33mcommit 9c7648ed1ae8789cc475bea6d695b7e6ca183442[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:28:20 2026 +0545
+
+    create validation script for the tree prescriber pipeline
+
+[33mcommit ba0b79931b59336fbee870dbcf05894911b75185[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:27:16 2026 +0545
+
+    update requirements.txt
+
+[33mcommit 31fa11e5f07440d9818971a5e0fa186affbbcfe2[m
+Author: WattAboutIt <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:27:02 2026 +0545
+
+    update readme
+
+[33mcommit 6e5d01b9547735a33238db93359f4e79444420fe[m
+Author: sparsha <sparshabhusal@gmail.com>
+Date:   Sun May 24 18:22:42 2026 +0545
+
+    Fixed NARC API
+
+[33mcommit 22c0e6d8fbf6a30086a1dfa57e4a1fb14dfec230[m
+Merge: 5ca1476 1b84ca3
+Author: Safal Neupane <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:14:44 2026 +0545
+
+    Merge pull request #10 from sabinkatwal/main
+    
+    updated
+
+[33mcommit 5ca147692e832fbc4cc2fdcf7f59380a45720b27[m
+Merge: 01d1be2 5e25839
+Author: Safal Neupane <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 18:01:39 2026 +0545
+
+    Merge pull request #9 from bhusalsparsha/main
+    
+    Fixed NARC API, implemented some backend changes
+
+[33mcommit 5e25839485d966c19edca4cb7a4678376ef67a7a[m
+Author: sparsha <sparshabhusal@gmail.com>
+Date:   Sun May 24 17:59:23 2026 +0545
+
+    Fixed NARC API, implemented some backend changes
+
+[33mcommit 1b84ca371cc9fe8c3b1e8a14f6fb5fa198c4c0cd[m
+Merge: 6633303 01d1be2
+Author: sabin katwal <105696786+sabinkatwal@users.noreply.github.com>
+Date:   Sun May 24 17:57:06 2026 +0545
+
+    Merge branch 'WattAboutIt:main' into main
+
+[33mcommit 663330317abbb744cca481a23374d5b08962e514[m
+Author: sabin katwal <sabinkatwal02@gmail.com>
+Date:   Sun May 24 17:49:43 2026 +0545
+
+    Update main.jsx
+
+[33mcommit 01d1be2cdc7e148e8897007e2e69b2808ce295cc[m
+Merge: f1aec0c 493ed30
+Author: Safal Neupane <081bei030.safal@pcampus.edu.np>
+Date:   Sun May 24 17:37:50 2026 +0545
+
+    Merge pull request #8 from sabinkatwal/main
+    
+    updated
+
+[33mcommit 493ed30c930aa6ab431f3afa68aa74fd751af659[m
+Author: sabin katwal <sabinkatwal02@gmail.com>
+Date:   Sun May 24 17:24:25 2026 +0545
+
+    added crops
+
+[33mcommit d153df2f7300cc807a416fa8afd10875b6f884a7[m
+Author: sabin katwal <sabinkatwal02@gmail.com>
