@@ -73,9 +73,12 @@ export default function Dashboard() {
       <style>{`
         .dash-root { font-family: 'DM Sans', sans-serif; min-height: 100vh; background: ${theme === "dark" ? "#020617" : "#f0fdf4"}; color: ${theme === "dark" ? "#e2e8f0" : "#052e16"}; }
         .dash-header {
-          background: ${theme === "dark" ? "rgba(15,23,42,0.92)" : "rgba(255,255,255,0.92)"}; border-bottom: 1px solid ${theme === "dark" ? "rgba(148,163,184,0.14)" : "#dcfce7"};
-          padding: 20px 32px;
+          background: ${theme === "dark" ? "rgba(15,23,42,0.92)" : "rgba(255,255,255,0.92)"}; border: 1px solid ${theme === "dark" ? "rgba(148,163,184,0.14)" : "#dcfce7"};
+          border-radius: 24px;
+          padding: 20px 28px;
           display: flex; flex-direction: column; gap: 16px;
+          box-shadow: 0 24px 80px ${theme === "dark" ? "rgba(0,0,0,0.32)" : "rgba(22,163,74,0.10)"};
+          overflow: hidden;
         }
         .dash-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
         .dash-right-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
@@ -100,14 +103,15 @@ export default function Dashboard() {
         }
         .dash-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: ${theme === "dark" ? "#2dd4bf" : "#22c55e"}; animation: pulse2 2s infinite; }
         .dash-logo-btn {
-          display: flex; align-items: center; gap: 10px;
+          display: flex; align-items: center; justify-content: center; gap: 10px;
           background: none; border: none; cursor: pointer;
-          padding: 0; margin-right: 16px;
-          transition: opacity 0.2s, transform 0.2s;
+          padding: 6px; margin-right: 16px;
+          border-radius: 18px;
+          transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
         }
-        .dash-logo-btn:hover { opacity: 0.8; transform: scale(1.02); }
+        .dash-logo-btn:hover { opacity: 0.9; transform: scale(1.02); box-shadow: 0 0 0 1px ${theme === "dark" ? "rgba(45,212,191,0.16)" : "rgba(22,163,74,0.16)"}, 0 0 24px ${theme === "dark" ? "rgba(45,212,191,0.12)" : "rgba(22,163,74,0.12)"}; }
         .dash-logo-img {
-          height: 52px; width: 52px; object-fit: contain;
+          height: 40px; width: 40px; object-fit: contain;
           filter: brightness(${theme === "dark" ? "1.1" : "0.85"}) drop-shadow(0 0 4px rgba(45, 212, 191, 0.2));
         }
         .dash-title {
@@ -117,7 +121,7 @@ export default function Dashboard() {
         .dash-subtitle { font-size: 0.875rem; color: ${theme === "dark" ? "#94a3b8" : "#4b7a59"}; margin-top: 4px; }
         .coord-badge {
           background: ${theme === "dark" ? "rgba(15,23,42,0.72)" : "#f0fdf4"}; border: 1px solid ${theme === "dark" ? "rgba(148,163,184,0.14)" : "#bbf7d0"};
-          border-radius: 16px; padding: 12px 16px; text-align: right; flex-shrink: 0;
+          border-radius: 18px; padding: 12px 16px; text-align: right; flex-shrink: 0;
         }
         .coord-badge-label { display: block;
     font-size: 0.7rem;
@@ -131,12 +135,12 @@ export default function Dashboard() {
           display: grid; gap: 12px;
           grid-template-columns: 1fr 1fr auto;
           background: ${theme === "dark" ? "rgba(15,23,42,0.72)" : "#f0fdf4"}; border: 1px solid ${theme === "dark" ? "rgba(148,163,184,0.14)" : "#bbf7d0"};
-          border-radius: 20px; padding: 16px;
+          border-radius: 18px; padding: 16px; overflow: hidden;
         }
         .form-field label { display: block; font-size: 0.7rem; font-weight: 700; color: ${theme === "dark" ? "#5eead4" : "#16a34a"}; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
         .form-input {
           width: 100%; background: ${theme === "dark" ? "rgba(2,6,23,0.75)" : "white"}; border: 1px solid ${theme === "dark" ? "rgba(148,163,184,0.16)" : "#dcfce7"};
-          border-radius: 12px; padding: 10px 14px; font-size: 0.9rem; color: ${theme === "dark" ? "#e2e8f0" : "#052e16"};
+          border-radius: 14px; padding: 10px 14px; font-size: 0.9rem; color: ${theme === "dark" ? "#e2e8f0" : "#052e16"};
           outline: none; transition: border-color 0.2s;
           font-family: 'DM Sans', sans-serif;
         }
@@ -144,7 +148,7 @@ export default function Dashboard() {
         .form-submit {
           align-self: end;
           background: ${theme === "dark" ? "#2dd4bf" : "#16a34a"}; color: ${theme === "dark" ? "#052e16" : "white"}; border: none;
-          border-radius: 12px; padding: 11px 24px;
+          border-radius: 14px; padding: 11px 24px;
           font-size: 0.875rem; font-weight: 600;
           cursor: pointer; transition: background 0.2s, transform 0.15s;
           white-space: nowrap; font-family: 'DM Sans', sans-serif;
@@ -165,6 +169,7 @@ export default function Dashboard() {
           .dash-header { padding: 16px; }
           .dash-form { grid-template-columns: 1fr 1fr; }
           .form-submit { grid-column: span 2; }
+          .dash-right-actions { justify-content: flex-start; }
         }
         @media (max-width: 600px) {
           .dash-form { grid-template-columns: 1fr; }
@@ -176,8 +181,8 @@ export default function Dashboard() {
         <div className="dash-header">
           <div className="dash-title-row">
             <div style={{ display: "flex", alignItems: "flex-start", gap: "0" }}>
-              <button className="dash-logo-btn" onClick={() => navigate("/home")} aria-label="Go to home">
-                <img src="/logo.svg" alt="Precision Reforestation" className="dash-logo-img" />
+              <button className="dash-logo-btn" onClick={() => navigate("/")} aria-label="Go to home">
+                <img src="/logo.png" alt="Precision Reforestation" className="dash-logo-img" />
               </button>
               <div>
                 <div className="dash-badge"><div className="dash-badge-dot" /> Live Analysis</div>
@@ -189,7 +194,7 @@ export default function Dashboard() {
                 <button className="dash-home-btn" type="button" onClick={toggleTheme}>
                   {theme === "dark" ? "☀ Light" : "☾ Dark"}
                 </button>
-              <button className="dash-home-btn" type="button" onClick={() => navigate("/home")}>Home</button>
+                <button className="dash-home-btn" type="button" onClick={() => navigate("/")}>Home</button>
               <div className="coord-badge">
                 <div className="coord-badge-label">Selected Point</div>
                 <div className="coord-badge-value">{location.lat.toFixed(4)}, {location.lng.toFixed(4)}</div>

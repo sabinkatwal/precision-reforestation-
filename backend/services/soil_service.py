@@ -98,12 +98,13 @@ async def _fetch_soilgrids(lat: float, lng: float) -> SoilData:
         raise ValueError("Incomplete SoilGrids payload")
 
     # d_factor already applied in _parse_layer
-    # soc (g/kg) × 1.724 → organic matter %
+    # SoilGrids SOC needs to be scaled down by 10 to match the usable value
+    # expected by the rest of the app.
     return SoilData(
         ph=round(ph_raw, 2),
         nitrogen=round(nitrogen_raw, 3),
         clay=round(clay_raw, 2),
-        organic_matter=round(soc_raw * 1.724, 2),
+        organic_matter=round(soc_raw / 10.0, 2),
         source="soilgrids",
     )
 

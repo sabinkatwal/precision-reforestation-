@@ -24,6 +24,19 @@ function BoundsHandler() {
   return null;
 }
 
+function ZoomControls() {
+  const map = useMap();
+
+  useEffect(() => {
+    const control = L.control.zoom({ position: "bottomright" });
+    control.addTo(map);
+
+    return () => control.remove();
+  }, [map]);
+
+  return null;
+}
+
 const selectedIcon = new L.DivIcon({
   className: "",
   html: '<div style="width:18px;height:18px;border-radius:9999px;background:radial-gradient(circle at 35% 35%, #d9ffe8, #22c55e 45%, #15803d 100%);box-shadow:0 0 0 8px rgba(34, 197, 94, 0.12), 0 12px 30px rgba(34, 197, 94, 0.45);border:1px solid rgba(255,255,255,0.45);"></div>',
@@ -36,7 +49,7 @@ export default function MapView({ location, onSelect }) {
   const center = useMemo(() => [28.2, 84.0], []);
 
   return (
-    <div className="glass-panel h-full min-h-[560px] overflow-hidden rounded-[28px] border border-white/10">
+    <div className="glass-panel h-full min-h-[560px] overflow-hidden rounded-[24px] border border-white/10 shadow-[0_24px_80px_rgba(0,0,0,0.35)]">
       <div className="flex items-center justify-between border-b border-white/8 px-5 py-4">
         <div>
           <div className={theme === "dark" ? "font-display text-lg font-bold text-white" : "font-display text-lg font-bold text-slate-900"}>Nepal Restoration Map</div>
@@ -47,9 +60,25 @@ export default function MapView({ location, onSelect }) {
         </div>
       </div>
 
-      <div className="map-shell h-[calc(100%-69px)] min-h-[491px]">
-        <MapContainer center={center} zoom={7} className="h-full w-full" zoomControl={false} scrollWheelZoom={false}>
+      <div className="map-shell h-[calc(100%-69px)] min-h-[491px] overflow-hidden rounded-b-[24px]">
+        <MapContainer
+          center={center}
+          zoom={7}
+          className="h-full w-full"
+          zoomControl={false}
+          scrollWheelZoom={true}
+          doubleClickZoom={true}
+          touchZoom={true}
+          zoomSnap={0.5}
+          zoomDelta={0.5}
+          wheelPxPerZoomLevel={120}
+          preferCanvas={true}
+          zoomAnimation={true}
+          fadeAnimation={true}
+          markerZoomAnimation={true}
+        >
           <BoundsHandler />
+          <ZoomControls />
           <ClickHandler onSelect={onSelect} />
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
